@@ -1,9 +1,17 @@
 package br.com.programadorNube.todoList.rest;
 
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import javax.inject.Inject;
+import javax.validation.ConstraintViolation;
+import javax.validation.Valid;
+import javax.validation.Validator;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -29,6 +37,8 @@ public class TodoRest {
 	@Inject
 	TodoService service;
 	
+	@Inject
+	Validator validator;
 	
 	@GET
 	@Path("")
@@ -57,9 +67,28 @@ public class TodoRest {
 			@Content(mediaType = "application/json",
 					schema = @Schema(implementation = Todo.class))
 	})
-	public Response incluir(TodoDto todo) {
-		service.inserir(todo);;
-		return Response.status(Response.Status.CREATED).build();
+	public Response incluir(@Valid TodoDto todo) {
+		
+		Set<ConstraintViolation<TodoDto>> erros
+		= validator.validate(todo);
+		
+		if(erros.isEmpty()) {
+			service.inserir(todo);
+		}else {
+			List<String> listaErros = erros.stream()
+			.map(ConstraintViolation::getMessage)
+			.collect(Collectors.toList());
+//			listaErros.forEach(i -> {
+//				System.out.println(i);
+//			});
+			throw new NotFoundException(listaErros.get(0));
+			
+		}
+		
+		
+		return Response
+				.status(Response.Status.CREATED)
+				.build();
 	}
 	
 	@DELETE
@@ -76,6 +105,7 @@ public class TodoRest {
 		service.excluir(id);
 		return Response.status(Response.Status.ACCEPTED).build();
 	}
+	
 	
 	
 }

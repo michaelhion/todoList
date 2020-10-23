@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import javax.json.bind.annotation.JsonbDateFormat;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 public class TodoDto  implements Serializable{
 
@@ -21,7 +23,9 @@ public class TodoDto  implements Serializable{
 	public void setId(Long id) {
 		this.id = id;
 	}
-
+	
+	@NotNull(message = "Nome é obrigatório")
+	@NotBlank(message = "Não é permito nome vazio")
 	public String getNome() {
 		return nome;
 	}
