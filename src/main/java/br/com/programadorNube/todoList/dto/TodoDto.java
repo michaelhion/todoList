@@ -7,6 +7,8 @@ import javax.json.bind.annotation.JsonbDateFormat;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.Length;
+
 public class TodoDto  implements Serializable{
 
 	private Long id;
@@ -26,6 +28,8 @@ public class TodoDto  implements Serializable{
 	
 	@NotNull(message = "Nome é obrigatório")
 	@NotBlank(message = "Não é permito nome vazio")
+	@Length(min = 3, max = 250, message = "Não é permido nomes "
+			+ "menores que 3 caracteres ou maiores que 250")
 	public String getNome() {
 		return nome;
 	}

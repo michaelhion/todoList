@@ -26,11 +26,9 @@ public class TodoService {
 	TodoDao dao;
 	
 	private void validar(Todo todo) {
-		//validar regra de negocio
-//		if(todo.getNome() == null) {
-//		agora o hibernate validator cuida disso
-//			throw new NotFoundException();
-//		}
+		if(dao.IsNomeRepetido(todo.getNome())) {
+			throw new NotFoundException();
+		}
 	}
 	@Transactional(rollbackOn = Exception.class)
 	public void inserir(TodoDto todoDto) {

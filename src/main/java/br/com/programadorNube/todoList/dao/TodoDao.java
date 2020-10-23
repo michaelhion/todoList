@@ -51,4 +51,16 @@ public class TodoDao {
 		
 		query.executeUpdate();
 	}
+	
+	public Boolean IsNomeRepetido(String nome) {
+		String nomeSql = "CONSULTAR_NOME_REPETIDO_TODO";
+		Boolean nomeRepetido = Boolean.FALSE;
+		TypedQuery<Todo>  query = em.createNamedQuery(nomeSql, Todo.class);
+		
+		query.setParameter("nome", nome);
+		
+		nomeRepetido = query.getResultList().size()>0;
+		
+		return nomeRepetido;
+	}
 }
