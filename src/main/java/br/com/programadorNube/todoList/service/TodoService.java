@@ -55,8 +55,16 @@ public class TodoService {
 			throw new NotFoundException();
 		}
 		dao.excluir(id);
+			
+	}
+	
+	public TodoDto buscarPorId(Long id) {
+		Todo todo = dao.buscarPorId(id);
+		if(todo == null) {
+			throw new NotFoundException();
+		}
 		
-		
+		return TodoParser.get().dto(todo);
 	}
 
 }

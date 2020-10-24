@@ -106,6 +106,17 @@ public class TodoRest {
 		return Response.status(Response.Status.ACCEPTED).build();
 	}
 	
-	
-	
+	@GET
+	@Path("/{id}")
+	@Operation(summary = "Buscar uma tarefa por ID",
+	description = "Buscar uma tarefa por ID")
+	@APIResponse(responseCode = "200",
+	description = "tarefa",
+	content = {
+			@Content(mediaType = "application/json",
+					schema = @Schema(implementation = Todo.class))
+	})
+	public Response buscarPorId(@PathParam("id")Long id) {
+		return Response.status(Response.Status.OK).entity(service.buscarPorId(id)).build();
+	}
 }
