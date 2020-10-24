@@ -27,6 +27,8 @@ import org.hibernate.type.descriptor.java.LocalDateTimeJavaDescriptor;
 	@NamedNativeQuery(name = "EXCLUIR_TODO", query ="DELETE todo WHERE id=:id"), 
 	@NamedNativeQuery(name = "CONSULTAR_NOME_REPETIDO_TODO", query ="" 
 			+ "SELECT id, nome, dataCriacao FROM todo where nome = :nome", resultClass = Todo.class),
+	@NamedNativeQuery(name = "CONSULTAR_TODO_ID", query ="" 
+			+ "SELECT id, nome, dataCriacao FROM todo where id = :id", resultClass = Todo.class),
 })
 public class Todo {
 	

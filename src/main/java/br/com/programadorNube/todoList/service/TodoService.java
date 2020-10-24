@@ -51,6 +51,9 @@ public class TodoService {
 	
 	public void excluir (Long id) {
 		//validar se id é valido
+		if (dao.buscarPorId(id)== null) {
+			throw new NotFoundException();
+		}
 		dao.excluir(id);
 		
 		

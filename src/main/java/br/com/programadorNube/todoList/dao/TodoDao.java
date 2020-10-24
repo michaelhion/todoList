@@ -60,7 +60,20 @@ public class TodoDao {
 		query.setParameter("nome", nome);
 		
 		nomeRepetido = query.getResultList().size()>0;
-		
+		  
 		return nomeRepetido;
+	}
+	
+	public  Todo buscarPorId(Long id) {
+		String nomeSql = "CONSULTAR_TODO_ID";
+		Todo todo;
+		TypedQuery<Todo> query = em.createNamedQuery(nomeSql, Todo.class);
+		query.setParameter("id", id);
+		try {
+			todo = query.getSingleResult();
+		} catch (NoResultException e) {
+			todo = null;
+		}
+		return todo;
 	}
 }
