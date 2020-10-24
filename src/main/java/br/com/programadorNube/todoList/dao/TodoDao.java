@@ -22,7 +22,19 @@ public class TodoDao {
 	@Transactional
 	public void inserir(Todo todo) {
 		String nomeSql = "INSERIR_TODO";
-		Query query = em.createNamedQuery(nomeSql);
+		inserirOuAtualizar(nomeSql, todo);
+		
+	}
+	
+	@Transactional
+	public void atualizar(Todo todo) {
+		String nomeSql = "ATUALIZAR_TODO";
+		inserirOuAtualizar(nomeSql, todo);
+		
+	}
+	
+	private void inserirOuAtualizar(String nomeSql, Todo todo) {
+		Query query =em.createNamedQuery(nomeSql);
 		query.setParameter("id", todo.getId());
 		query.setParameter("nome", todo.getNome());
 		query.setParameter("dataCriacao", todo.getDataCriacao());

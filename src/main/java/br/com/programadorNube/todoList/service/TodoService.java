@@ -58,13 +58,25 @@ public class TodoService {
 			
 	}
 	
-	public TodoDto buscarPorId(Long id) {
+	public TodoDto buscar(Long id) {
+		
+		
+		return TodoParser.get().dto(buscarPorId(id));
+	}
+	@Transactional(rollbackOn = Exception.class)
+	public void atualizar(Long id , TodoDto dto) {
+		Todo todo = TodoParser.get().entidade(dto);
+		
+		Todo todoBanco = buscarPorId(id);
+		todoBanco.setNome(todo.getNome());
+		dao.atualizar(todoBanco);
+	}
+	
+	private Todo buscarPorId(Long id) {
 		Todo todo = dao.buscarPorId(id);
 		if(todo == null) {
 			throw new NotFoundException();
 		}
-		
-		return TodoParser.get().dto(todo);
+		return todo;
 	}
-
 }

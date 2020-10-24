@@ -13,6 +13,7 @@ import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -117,6 +118,20 @@ public class TodoRest {
 					schema = @Schema(implementation = Todo.class))
 	})
 	public Response buscarPorId(@PathParam("id")Long id) {
-		return Response.status(Response.Status.OK).entity(service.buscarPorId(id)).build();
+		return Response.status(Response.Status.OK).entity(service.buscar(id)).build();
+	}
+	@PUT
+	@Path("{id}")
+	@Operation(summary = "Editar uma tarefa com base no ID",
+			description = "Editar uma tarefa com base no ID")
+			@APIResponse(responseCode = "200",
+			description = "tarefa",
+			content = {
+					@Content(mediaType = "application/json",
+							schema = @Schema(implementation = Todo.class))
+			})
+	public Response atualizar(@PathParam("id")Long id, TodoDto todo) {
+		service.atualizar(id, todo);
+		return Response.status(Response.Status.OK).build();
 	}
 }

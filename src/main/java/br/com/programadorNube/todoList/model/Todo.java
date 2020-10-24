@@ -29,6 +29,8 @@ import org.hibernate.type.descriptor.java.LocalDateTimeJavaDescriptor;
 			+ "SELECT id, nome, dataCriacao FROM todo where nome = :nome", resultClass = Todo.class),
 	@NamedNativeQuery(name = "CONSULTAR_TODO_ID", query ="" 
 			+ "SELECT id, nome, dataCriacao FROM todo where id = :id", resultClass = Todo.class),
+	@NamedNativeQuery(name = "ATUALIZAR_TODO", query="UPDATE todo " + 
+			"set nome = :nome, dataCriacao = :dataCriacao WHERE id= :id"),
 })
 public class Todo {
 	
