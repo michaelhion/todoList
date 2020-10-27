@@ -20,10 +20,16 @@ public class TodoDao {
 	EntityManager em;
 	
 	@Transactional
-	public void inserir(Todo todo) {
+	/*
+	 * inseri um todo e retorna o id criado
+	 * @param todo
+	 * @return
+	 */
+	public Long inserir(Todo todo) {
 		String nomeSql = "INSERIR_TODO";
-		inserirOuAtualizar(nomeSql, todo);
-		
+//		inserirOuAtualizar(nomeSql, todo);
+		todo.persistAndFlush();
+		return todo.getId();
 	}
 	
 	@Transactional

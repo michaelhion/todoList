@@ -7,13 +7,16 @@ import java.util.stream.Collectors;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import javax.ws.rs.NotFoundException;
 
 import org.eclipse.microprofile.opentracing.Traced;
+import org.hibernate.annotations.CreationTimestamp;
 
 import br.com.programadorNube.todoList.dao.TodoDao;
 import br.com.programadorNube.todoList.dto.TodoDto;
 import br.com.programadorNube.todoList.model.Todo;
+import br.com.programadorNube.todoList.model.dominio.StatusEnum;
 import br.com.programadorNube.todoList.model.parser.TodoParser;
 
 
@@ -25,20 +28,32 @@ public class TodoService {
 	@Inject
 	TodoDao dao;
 	
+	@Inject
+	TodoStatusService statusService;
+	
 	private void validar(Todo todo) {
 		if(dao.IsNomeRepetido(todo.getNome())) {
 			throw new NotFoundException();
 		}
 	}
 	@Transactional(rollbackOn = Exception.class)
-	public void inserir(TodoDto todoDto) {
+	/*
+	 * regra de criacao
+	 * toda tarefa criada vem por padrao na lista
+	 * Todo e com a data corrente
+	 */
+	public void inserir(@Valid TodoDto todoDto) {
 		//validação
 		Todo todo = TodoParser.get().entidade(todoDto);
 		validar(todo);
+		/*
+		 * substituida por @CreationTimestamp
+		 */
+//		todo.setDataCriacao(LocalDateTime.now());
 		
-		todo.setDataCriacao(LocalDateTime.now());
+		Long id = dao.inserir(todo);
 		
-		dao.inserir(todo);
+		statusService.inserir(id, StatusEnum.TODO);
 	}
 	
 	public List<TodoDto> listar() {

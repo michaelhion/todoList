@@ -3,7 +3,9 @@ package br.com.programadorNube.todoList.model;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,10 +13,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedNativeQueries;
 import javax.persistence.NamedNativeQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.type.descriptor.java.LocalDateTimeJavaDescriptor;
+
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 
 @Entity
 @Table(name="todo")
@@ -32,7 +38,7 @@ import org.hibernate.type.descriptor.java.LocalDateTimeJavaDescriptor;
 	@NamedNativeQuery(name = "ATUALIZAR_TODO", query="UPDATE todo " + 
 			"set nome = :nome, dataCriacao = :dataCriacao WHERE id= :id"),
 })
-public class Todo {
+public class Todo extends PanacheEntityBase{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,7 +48,18 @@ public class Todo {
 	private String nome;
 	
 	@Column(name = "dataCriacao", nullable = false, updatable = false)
+	@CreationTimestamp
 	private LocalDateTime dataCriacao;
+	
+	@OneToMany(mappedBy = "todo", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<TodoStatus> status;
+	
+	public Todo(Long id) {
+	}
+	
+	public Todo() {
+		super();
+	}
 
 	public Long getId() {
 		return id;

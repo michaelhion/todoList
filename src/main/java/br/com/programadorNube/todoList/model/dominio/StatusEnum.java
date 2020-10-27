@@ -11,4 +11,14 @@ public enum StatusEnum {
 	StatusEnum(String descricao){
 		this.descricao = descricao;
 	}
+	
+	public static Boolean isInvalido(String teste) {
+			for (StatusEnum status : StatusEnum.values()) {
+			if (status.name().equals(teste)) {
+				return Boolean.FALSE;
+			}
+		}
+		return Boolean.TRUE;
+	}
+	
 }
