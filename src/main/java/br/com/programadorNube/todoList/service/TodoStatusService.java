@@ -1,5 +1,9 @@
 package br.com.programadorNube.todoList.service;
 
+import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
@@ -7,10 +11,12 @@ import javax.ws.rs.NotAllowedException;
 import javax.ws.rs.NotFoundException;
 
 import br.com.programadorNube.todoList.dao.TodoStatusDao;
+import br.com.programadorNube.todoList.dto.TodoStatusDto;
 import br.com.programadorNube.todoList.exceptions.ExceptionsTodo;
 import br.com.programadorNube.todoList.model.Todo;
 import br.com.programadorNube.todoList.model.TodoStatus;
 import br.com.programadorNube.todoList.model.dominio.StatusEnum;
+import br.com.programadorNube.todoList.model.parser.TodoStatusParser;
 
 @RequestScoped
 public class TodoStatusService {
@@ -39,7 +45,7 @@ public class TodoStatusService {
 		}
 		
 	}
-	
+	@Transactional(rollbackOn = ExceptionsTodo.class)
 	public void atualizar(Long id, String enumTexo) {
 		
 		TodoStatus statusTela = new TodoStatus(StatusEnum.valueOf(enumTexo));
@@ -47,6 +53,12 @@ public class TodoStatusService {
 		TodoStatus statusBanco = dao.buscarStatusPorTarefa(id).get(0);
 		validarAtualizacao(statusBanco, statusTela);
 		dao.inserir(statusTela);
+	}
+	
+	public List<TodoStatusDto> buscarTodosStatusPorTarefa(Long idTarefa){
+		List<TodoStatus> statusBanco = dao.buscarStatusPorTarefa(idTarefa);
+		
+		return statusBanco.stream().map(TodoStatusParser.get()::dto).collect(Collectors.toList());
 	}
 	
 }
