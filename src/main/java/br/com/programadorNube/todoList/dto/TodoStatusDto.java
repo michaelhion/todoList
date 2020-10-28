@@ -9,6 +9,8 @@ public class TodoStatusDto {
 	private Long id;
 	private String status;
 	
+	private String nomeUsuario;
+	
 	@JsonbDateFormat("dd/MM/yyyy HH:mm")
 	private LocalDateTime data;
 
@@ -34,6 +36,14 @@ public class TodoStatusDto {
 
 	public void setData(LocalDateTime data) {
 		this.data = data;
+	}
+
+	public String getNomeUsuario() {
+		return nomeUsuario;
+	}
+
+	public void setNomeUsuario(String nomeUsuario) {
+		this.nomeUsuario = nomeUsuario;
 	}
 	
 	

@@ -43,6 +43,9 @@ public class TodoStatus extends PanacheEntity{
 	@Column(name = "data")
 	@UpdateTimestamp
 	private LocalDateTime data;
+	
+	@ManyToOne(optional = false) 
+	private User user;
 
 		public StatusEnum getStatus() {
 		return status;
@@ -82,5 +85,15 @@ public class TodoStatus extends PanacheEntity{
 	public Long getId() {
 		return id;
 	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+	
+	
 	
 }

@@ -24,15 +24,19 @@ public class TodoStatusService {
 	@Inject
 	TodoStatusDao dao;
 	
+	@Inject
+	UserService userService;
+	
 	private void validar(TodoStatus todoStatus) {
 		if (StatusEnum.isInvalido(todoStatus.getStatus().toString())) {
 			throw new NotFoundException();
 		}
 	}
 	@Transactional(rollbackOn = ExceptionsTodo.class)
-	public void inserir(Long id, StatusEnum enumTexto) {
+	public void inserir(Long id, StatusEnum enumTexto, String emailLogado) {
 		TodoStatus status = new TodoStatus(enumTexto);
 		status.setTodo(new Todo(id));
+		status.setUser(userService.buscarUsuarioPorEmail(emailLogado));
 		validar(status);
 		dao.inserir(status);
 	}

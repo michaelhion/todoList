@@ -65,9 +65,11 @@ public class TodoDao {
 		String nomeSql = "EXCLUIR_TODO";
 		Query query = em.createNamedQuery(nomeSql);
 		
-		query.setParameter("id", id);
+//		query.setParameter("id", id);
+//		
+//		query.executeUpdate();
 		
-		query.executeUpdate();
+		Todo.deleteById(id);
 	}
 	
 	public Boolean IsNomeRepetido(String nome) {

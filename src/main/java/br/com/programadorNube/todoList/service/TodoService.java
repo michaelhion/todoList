@@ -31,6 +31,7 @@ public class TodoService {
 	@Inject
 	TodoStatusService statusService;
 	
+	
 	private void validar(Todo todo) {
 		if(dao.IsNomeRepetido(todo.getNome())) {
 			throw new NotFoundException();
@@ -42,7 +43,7 @@ public class TodoService {
 	 * toda tarefa criada vem por padrao na lista
 	 * Todo e com a data corrente
 	 */
-	public void inserir(@Valid TodoDto todoDto) {
+	public void inserir(@Valid TodoDto todoDto, String emailLogado) {
 		//validação
 		Todo todo = TodoParser.get().entidade(todoDto);
 		validar(todo);
@@ -53,7 +54,7 @@ public class TodoService {
 		
 		Long id = dao.inserir(todo);
 		
-		statusService.inserir(id, StatusEnum.TODO);
+		statusService.inserir(id, StatusEnum.TODO, emailLogado);
 	}
 	
 	public List<TodoDto> listar() {

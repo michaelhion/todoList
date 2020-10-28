@@ -15,7 +15,7 @@ public class TodoStatusParser {
 		dto.setId(entidade.getId());
 		dto.setData(entidade.getData());
 		dto.setStatus(entidade.getStatus().name());
-		
+		dto.setNomeUsuario(entidade.getUser().getNome());
 		return dto;
 	}
 	
