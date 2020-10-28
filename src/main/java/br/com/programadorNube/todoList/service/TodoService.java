@@ -85,6 +85,7 @@ public class TodoService {
 		Todo todoBanco = buscarPorId(id);
 		todoBanco.setNome(todo.getNome());
 		dao.atualizar(todoBanco);
+		statusService.atualizar(id, dto.getStatus());
 	}
 	
 	private Todo buscarPorId(Long id) {

@@ -55,11 +55,21 @@ public class Todo extends PanacheEntityBase{
 	private List<TodoStatus> status;
 	
 	public Todo(Long id) {
+		this.id = id;
 	}
 	
 	public Todo() {
 		super();
 	}
+	
+	public List<TodoStatus> getStatus() {
+		return status;
+	}
+
+	public void setStatus(List<TodoStatus> status) {
+		this.status = status;
+	}
+
 
 	public Long getId() {
 		return id;

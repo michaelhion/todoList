@@ -27,6 +27,7 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 
 import br.com.programadorNube.todoList.dto.TodoDto;
+import br.com.programadorNube.todoList.exceptions.ExceptionsTodo;
 import br.com.programadorNube.todoList.model.Todo;
 import br.com.programadorNube.todoList.service.TodoService;
 
@@ -40,6 +41,9 @@ public class TodoRest {
 	
 	@Inject
 	Validator validator;
+	
+	@Inject
+	ExceptionsTodo ex;
 	
 	@GET
 	@Path("")
@@ -68,7 +72,7 @@ public class TodoRest {
 			@Content(mediaType = "application/json",
 					schema = @Schema(implementation = Todo.class))
 	})
-	public Response incluir(@Valid TodoDto todo) {
+	public Response incluir(TodoDto todo) {
 		
 		Set<ConstraintViolation<TodoDto>> erros
 		= validator.validate(todo);
@@ -82,7 +86,7 @@ public class TodoRest {
 //			listaErros.forEach(i -> {
 //				System.out.println(i);
 //			});
-			throw new NotFoundException(listaErros.get(0));
+			ex.erroIncluir();
 			
 		}
 		

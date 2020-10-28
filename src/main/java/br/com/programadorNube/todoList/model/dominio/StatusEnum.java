@@ -13,12 +13,15 @@ public enum StatusEnum {
 	}
 	
 	public static Boolean isInvalido(String teste) {
-			for (StatusEnum status : StatusEnum.values()) {
-			if (status.name().equals(teste)) {
+		
+		for(StatusEnum status: StatusEnum.values()) {
+			if(status.name().equals(teste)) {
 				return Boolean.FALSE;
 			}
 		}
 		return Boolean.TRUE;
+		
+		
 	}
 	
 }

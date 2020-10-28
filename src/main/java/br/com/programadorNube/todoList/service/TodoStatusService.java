@@ -3,9 +3,11 @@ package br.com.programadorNube.todoList.service;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
+import javax.ws.rs.NotAllowedException;
 import javax.ws.rs.NotFoundException;
 
 import br.com.programadorNube.todoList.dao.TodoStatusDao;
+import br.com.programadorNube.todoList.exceptions.ExceptionsTodo;
 import br.com.programadorNube.todoList.model.Todo;
 import br.com.programadorNube.todoList.model.TodoStatus;
 import br.com.programadorNube.todoList.model.dominio.StatusEnum;
@@ -16,19 +18,35 @@ public class TodoStatusService {
 	@Inject
 	TodoStatusDao dao;
 	
-	private void validar(TodoStatus status) {
-		if (StatusEnum.
-				isInvalido(
-						status.getStatus().toString())) {
+	private void validar(TodoStatus todoStatus) {
+		if (StatusEnum.isInvalido(todoStatus.getStatus().toString())) {
 			throw new NotFoundException();
 		}
 	}
-	@Transactional(rollbackOn = Exception.class)
+	@Transactional(rollbackOn = ExceptionsTodo.class)
 	public void inserir(Long id, StatusEnum enumTexto) {
 		TodoStatus status = new TodoStatus(enumTexto);
 		status.setTodo(new Todo(id));
 		validar(status);
 		dao.inserir(status);
+	}
+	
+	private void validarAtualizacao(TodoStatus todoStatusBanco,
+			 TodoStatus todoStatusTela) {
+		validar(todoStatusTela);
+		if(todoStatusBanco.getStatus().equals(StatusEnum.DONE)) {
+			throw new NotAllowedException("Tarefa com status que não permite modificação");
+		}
+		
+	}
+	
+	public void atualizar(Long id, String enumTexo) {
+		
+		TodoStatus statusTela = new TodoStatus(StatusEnum.valueOf(enumTexo));
+		statusTela.setTodo(new Todo(id));
+		TodoStatus statusBanco = dao.buscarStatusPorTarefa(id).get(0);
+		validarAtualizacao(statusBanco, statusTela);
+		dao.inserir(statusTela);
 	}
 	
 }

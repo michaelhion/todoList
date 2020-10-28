@@ -13,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.UpdateTimestamp;
+
 import br.com.programadorNube.todoList.model.dominio.StatusEnum;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
@@ -24,6 +26,7 @@ public class TodoStatus extends PanacheEntity{
 	@Column(name = "status", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private StatusEnum status;
+	
 	
 	public TodoStatus(StatusEnum statusEnum){
 		this.status = statusEnum;
@@ -37,6 +40,8 @@ public class TodoStatus extends PanacheEntity{
 		super();
 	} 
 	
+	@Column(name = "data")
+	@UpdateTimestamp
 	private LocalDateTime data;
 
 		public StatusEnum getStatus() {
@@ -61,6 +66,13 @@ public class TodoStatus extends PanacheEntity{
 
 	public void setTodo(Todo todo) {
 		this.todo = todo;
+	}
+
+	@Override
+	public String toString() {
+		//TODO
+		return status.name();
+		
 	}
 	
 	
