@@ -3,7 +3,6 @@ package br.com.programadorNube.todoList;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
 
-import org.hamcrest.core.Is;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 
