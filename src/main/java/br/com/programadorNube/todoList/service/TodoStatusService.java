@@ -50,12 +50,16 @@ public class TodoStatusService {
 		
 	}
 	@Transactional(rollbackOn = ExceptionsTodo.class)
-	public void atualizar(Long id, String enumTexo) {
+	public void atualizar(Long id, String enumTexo, String emailLogado) {
 		
 		TodoStatus statusTela = new TodoStatus(StatusEnum.valueOf(enumTexo));
 		statusTela.setTodo(new Todo(id));
 		TodoStatus statusBanco = dao.buscarStatusPorTarefa(id).get(0);
 		validarAtualizacao(statusBanco, statusTela);
+		
+		statusTela.setTodo(new Todo(id));
+		statusTela.setUser(userService.buscarUsuarioPorEmail(emailLogado));
+		
 		dao.inserir(statusTela);
 	}
 	

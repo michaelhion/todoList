@@ -140,8 +140,9 @@ public class TodoRest {
 					@Content(mediaType = "application/json",
 							schema = @Schema(implementation = Todo.class))
 			})
-	public Response atualizar(@PathParam("id")Long id, TodoDto todo) {
-		service.atualizar(id, todo);
+	public Response atualizar(@PathParam("id")Long id, TodoDto todo,
+			@Context SecurityContext securityContex) {
+		service.atualizar(id, todo , securityContex.getUserPrincipal().getName() );
 		return Response.status(Response.Status.OK).build();
 	}
 }

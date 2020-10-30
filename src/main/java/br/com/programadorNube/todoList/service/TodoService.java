@@ -80,13 +80,13 @@ public class TodoService {
 		return TodoParser.get().dto(buscarPorId(id));
 	}
 	@Transactional(rollbackOn = Exception.class)
-	public void atualizar(Long id , TodoDto dto) {
+	public void atualizar(Long id , TodoDto dto, String emailLogado) {
 		Todo todo = TodoParser.get().entidade(dto);
 		
 		Todo todoBanco = buscarPorId(id);
 		todoBanco.setNome(todo.getNome());
 		dao.atualizar(todoBanco);
-		statusService.atualizar(id, dto.getStatus());
+		statusService.atualizar(id, dto.getStatus(), emailLogado);
 	}
 	
 	private Todo buscarPorId(Long id) {
